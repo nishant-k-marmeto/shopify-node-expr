@@ -21,6 +21,7 @@ import verifyRequest from "./middleware/verifyRequest.js";
 import proxyRouter from "./routes/app_proxy/index.js";
 import userRoutes from "./routes/index.js";
 import webhookHandler from "./webhooks/_index.js";
+import SessionModel from '../utils/models/SessionModel.js';
 
 setupCheck(); // Run a check to ensure everything is setup properly
 
@@ -32,6 +33,12 @@ const mongoUrl =
   process.env.MONGO_URL || "mongodb://127.0.0.1:27017/shopify-express-app";
 
 mongoose.connect(mongoUrl);
+
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB connected successfully');
+});
+
+// POST route to save session data
 
 const createServer = async (root = process.cwd()) => {
   const app = Express();
@@ -70,6 +77,28 @@ const createServer = async (root = process.cwd()) => {
   // If you're making changes to any of the routes, please make sure to add them in `./client/vite.config.js` or it'll not work.
   app.use("/api/apps", verifyRequest, userRoutes); //Verify user route requests
   app.use("/api/proxy_route", verifyProxy, proxyRouter); //MARK:- App Proxy routes
+
+
+  app.post('/api/save-session', async (req, res) => {
+    try {
+      const { id, content, shop } = req.body; // Extract the data from the request body
+  
+      // Create a new session document
+      const newSession = new SessionModel({
+        id,
+        content,
+        shop,
+      });
+  
+      // Save the session document to MongoDB
+      await newSession.save();
+  
+      res.status(200).json({ message: 'Session saved successfully', newSession });
+    } catch (error) {
+      console.error('Error saving session:', error);
+      res.status(500).json({ message: 'Failed to save session', error });
+    }
+  });
 
   app.post("/api/gdpr/:topic", verifyHmac, async (req, res) => {
     const { body } = req;

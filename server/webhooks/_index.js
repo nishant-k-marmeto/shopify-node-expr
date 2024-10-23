@@ -29,14 +29,14 @@ const webhookHandler = async (req, res) => {
     }
 
     //SWITCHCASE
-switch (validateWebhook.topic) {
-  case "APP_UNINSTALLED":
-    await appUninstallHandler(topic, shop, req.body, webhookId, apiVersion);
-    break;
-  default:
-    throw new Error(`Can't find a handler for ${validateWebhook.topic}`);
-}
-//SWITCHCASE END
+    switch (validateWebhook.topic) {
+      case "APP_UNINSTALLED":
+        await appUninstallHandler(topic, shop, req.body, webhookId, apiVersion);
+        break;
+      default:
+        throw new Error(`Can't find a handler for ${validateWebhook.topic}`);
+    }
+    //SWITCHCASE END
     console.log(`--> Processed ${topic} webhook for ${shop}`);
     return res.status(200).send({ message: "ok" });
   } catch (e) {
