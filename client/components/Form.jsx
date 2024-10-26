@@ -1,16 +1,22 @@
-import { Form, FormLayout, Checkbox, TextField, Button } from '@shopify/polaris';
-import { useState, useCallback } from 'react';
+import {
+  Form,
+  FormLayout,
+  Checkbox,
+  TextField,
+  Button,
+} from "@shopify/polaris";
+import { useState, useCallback } from "react";
 
 function FormOnSubmitExample() {
   const [newsletter, setNewsletter] = useState(false);
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = useCallback(async () => {
     const sessionData = {
-      id: 'session_id_123', // You can generate this dynamically if needed
+      id: "session_id_123", // You can generate this dynamically if needed
       content: JSON.stringify({
         email,
         name,
@@ -18,40 +24,46 @@ function FormOnSubmitExample() {
         confirmPassword,
         newsletter,
       }),
-      shop: 'example.myshopify.com', // Replace with actual shop data
+      shop: "example.myshopify.com", // Replace with actual shop data
     };
 
     try {
-      const response = await fetch('/api/save-session', {
-        method: 'POST',
+      const response = await fetch("/api/save-session", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(sessionData),
       });
 
       if (response.ok) {
         const result = await response.json();
-        console.log('Session saved:', result);
+        console.log("Session saved:", result);
       } else {
-        console.error('Failed to save session');
+        console.error("Failed to save session");
       }
     } catch (error) {
-      console.error('Error during fetch:', error);
+      console.error("Error during fetch:", error);
     }
 
-    setEmail('');
-    setName('');
-    setPassword('');
-    setConfirmPassword('');
+    setEmail("");
+    setName("");
+    setPassword("");
+    setConfirmPassword("");
     setNewsletter(false);
   }, [email, name, password, confirmPassword, newsletter]);
 
-  const handleNewsLetterChange = useCallback((value) => setNewsletter(value), []);
+  const handleNewsLetterChange = useCallback(
+    (value) => setNewsletter(value),
+    []
+  );
   const handleEmailChange = useCallback((value) => setEmail(value), []);
   const handleNameChange = useCallback((value) => setName(value), []);
   const handlePasswordChange = useCallback((value) => setPassword(value), []);
-  const handleConfirmPasswordChange = useCallback((value) => setConfirmPassword(value), []);
+  const handleConfirmPasswordChange = useCallback(
+    (value) => setConfirmPassword(value),
+    []
+  );
 
   return (
     <Form onSubmit={handleSubmit}>

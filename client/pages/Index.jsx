@@ -6,7 +6,7 @@ import {
   Layout,
   Page,
   Text,
-  MediaCard
+  MediaCard,
 } from "@shopify/polaris";
 import { ExternalIcon } from "@shopify/polaris-icons";
 import { navigate } from "raviger";
@@ -17,27 +17,27 @@ const HomePage = () => {
       <Page title="Home">
         <Layout>
           <MediaCard
-              title="Getting Started"
-              primaryAction={{
-                content: 'Learn about getting started',
-                onAction: () => {
-                  navigate('/nishant-demo-api');
-                },
+            title="Getting Started"
+            primaryAction={{
+              content: "Learn about getting started",
+              onAction: () => {
+                navigate("/nishant-demo-api");
+              },
+            }}
+            description="Discover how Shopify can power up your entrepreneurial journey."
+            popoverActions={[{ content: "Dismiss", onAction: () => {} }]}
+          >
+            <img
+              alt=""
+              width="100%"
+              height="100%"
+              style={{
+                objectFit: "cover",
+                objectPosition: "center",
               }}
-              description="Discover how Shopify can power up your entrepreneurial journey."
-              popoverActions={[{content: 'Dismiss', onAction: () => {}}]}
-            >
-              <img
-                alt=""
-                width="100%"
-                height="100%"
-                style={{
-                  objectFit: 'cover',
-                  objectPosition: 'center',
-                }}
-                src="https://burst.shopifycdn.com/photos/business-woman-smiling-in-office.jpg?width=1850"
-              />
-          </MediaCard>   
+              src="https://burst.shopifycdn.com/photos/business-woman-smiling-in-office.jpg?width=1850"
+            />
+          </MediaCard>
           <Layout.Section variant="fullWidth">
             <Card>
               <BlockStack gap="200">

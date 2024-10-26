@@ -21,7 +21,7 @@ import verifyRequest from "./middleware/verifyRequest.js";
 import proxyRouter from "./routes/app_proxy/index.js";
 import userRoutes from "./routes/index.js";
 import webhookHandler from "./webhooks/_index.js";
-import SessionModel from '../utils/models/SessionModel.js';
+import SessionModel from "../utils/models/SessionModel.js";
 
 setupCheck(); // Run a check to ensure everything is setup properly
 
@@ -34,8 +34,8 @@ const mongoUrl =
 
 mongoose.connect(mongoUrl);
 
-mongoose.connection.on('connected', () => {
-  console.log('MongoDB connected successfully');
+mongoose.connection.on("connected", () => {
+  console.log("MongoDB connected successfully");
 });
 
 // POST route to save session data
@@ -78,25 +78,27 @@ const createServer = async (root = process.cwd()) => {
   app.use("/api/apps", verifyRequest, userRoutes); //Verify user route requests
   app.use("/api/proxy_route", verifyProxy, proxyRouter); //MARK:- App Proxy routes
 
-
-  app.post('/api/save-session', async (req, res) => {
+  app.post("/api/save-session", async (req, res) => {
     try {
       const { id, content, shop } = req.body; // Extract the data from the request body
-  
+
       // Create a new session document
+      debugger;
       const newSession = new SessionModel({
         id,
         content,
         shop,
       });
-  
+
       // Save the session document to MongoDB
       await newSession.save();
-  
-      res.status(200).json({ message: 'Session saved successfully', newSession });
+
+      res
+        .status(200)
+        .json({ message: "Session saved successfully", newSession });
     } catch (error) {
-      console.error('Error saving session:', error);
-      res.status(500).json({ message: 'Failed to save session', error });
+      console.error("Error saving session:", error);
+      res.status(500).json({ message: "Failed to save session", error });
     }
   });
 
